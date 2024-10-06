@@ -3,6 +3,11 @@ from avitoapi.AvitoProfile import AvitoProfile
 from avitoapi.AvitoToken import AvitoToken
 
 
+__all__ = (
+    'AvitoAPI',
+)
+
+
 class AvitoAPI(
     AvitoToken,
     AvitoProfile,

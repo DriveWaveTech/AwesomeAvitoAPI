@@ -1,9 +1,9 @@
-from datetime import datetime
+import datetime
 
-from pydantic import BaseModel
+import pydantic
 
 
-class OperationHistoryResponse(BaseModel):
+class OperationHistoryResponse(pydantic.BaseModel):
     amountBonus: int
     amountRub: int
     amountTotal: int
@@ -13,7 +13,7 @@ class OperationHistoryResponse(BaseModel):
     serviceId: int
     serviceName: str
     serviceType: str
-    updatedAt: datetime
+    updatedAt: datetime.datetime
 
     def __str__(self):
         return f'<{self.__class__.__name__} {' '.join([f'{k}={v}' for k, v in self.__dict__.items()])}>'

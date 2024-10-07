@@ -1,13 +1,13 @@
-from enum import Enum
+import enum
 
-from pydantic import BaseModel
+import pydantic
 
 
-class TokenType(Enum):
+class TokenType(enum.Enum):
     BEARER = 'Bearer'
 
 
-class TokenResponse(BaseModel):
+class TokenResponse(pydantic.BaseModel):
     access_token: str
     expires_in: int
     token_type: TokenType

@@ -1,18 +1,18 @@
 import typing
-from datetime import datetime
+import datetime
 
-from pydantic import BaseModel
+import pydantic
 
 
-class DaysData(BaseModel):
+class DaysData(pydantic.BaseModel):
     answered: int
     calls: 0
     new: int
     newAnswered: int
-    date: datetime
+    date: datetime.datetime
 
 
-class CallStatisticResponse(BaseModel):
+class CallStatisticResponse(pydantic.BaseModel):
     itemId: int
     employeeId: int
     days: typing.List[DaysData]

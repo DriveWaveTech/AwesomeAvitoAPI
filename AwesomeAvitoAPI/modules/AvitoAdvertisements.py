@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from base import AvitoBase
-from responses import CallStatisticResponse
+from responses import CallStatisticResponse, ItemStatus, ItemsResponse
 
 
 class AvitoAdvertisements(AvitoBase):
@@ -55,15 +55,18 @@ class AvitoAdvertisements(AvitoBase):
 
     async def get_call_statistics(
         self,
+        item_ids: typing.Union[int, typing.List[int]],
         date_from: typing.Union[str, datetime] = None,
         date_to: typing.Union[str, datetime] = None,
-        item_ids: typing.List[int] = None,
     ):
         """
         https://developers.avito.ru/api-catalog/item/documentation#operation/postCallsStats
 
         :return:
         """
+        if isinstance(item_ids, int):
+            item_ids = [item_ids]
+
         for i in item_ids:
             if not isinstance(i, int):
                 raise ValueError("Item ID must be an integer")
@@ -94,3 +97,65 @@ class AvitoAdvertisements(AvitoBase):
         )
 
         return [CallStatisticResponse(**r) for r in response.get('result', {}).get('items', [])]
+
+    async def get_items(
+        self,
+        per_page: int = 25,
+        page: int = 1,
+        updated_at_from: typing.Union[str, datetime] = None,
+        category: typing.Optional[int] = None,
+        *statuses: typing.Tuple[ItemStatus]
+    ):
+        """
+        https://developers.avito.ru/api-catalog/item/documentation#operation/getItemsInfo
+
+        :return:
+        """
+        for status in statuses:
+            if not isinstance(status, ItemStatus):
+                raise ValueError("Status must be an instance of ItemStatus")
+
+        params = {
+            'per_page': per_page,
+            'page': page,
+        }
+
+        if isinstance(updated_at_from, datetime):
+            updated_at_from = updated_at_from.strftime("%Y-%m-%d")
+
+        if updated_at_from:
+            params['updatedAtFrom'] = updated_at_from
+
+        if category:
+            params['category'] = category
+
+        if statuses:
+            params['status'] = ','.join([s.value for s in statuses])  # noqa
+
+        headers = await self._auth_header
+        headers['Content-Type'] = 'application/json'
+
+        response = await self._request(
+            method='GET',
+            url='https://api.avito.ru/core/v1/items',
+            headers=headers,
+            params=params
+        )
+
+        return ItemsResponse(**response)
+
+    async def get_all_items(self):
+        """
+        https://developers.avito.ru/api-catalog/item/documentation#operation/getItemsInfo
+
+        :return:
+        """
+        page = 1
+
+        while True:
+            yield items := await self.get_items(per_page=100, page=page)
+
+            if not items or len(items.resources) < 100:
+                break
+
+            page += 1

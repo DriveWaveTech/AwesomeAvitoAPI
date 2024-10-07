@@ -3,3 +3,5 @@ from .user_info_response import UserInfoResponse
 from .balance_info_response import BalanceInfoResponse
 from .operation_history_response import OperationHistoryResponse
 from .call_statistic_response import CallStatisticResponse
+from .item_statuses_enum import ItemStatus
+from .items_response import ItemsResponse

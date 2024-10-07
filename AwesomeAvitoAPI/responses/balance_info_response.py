@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+import pydantic
 
 
-class BalanceInfoResponse(BaseModel):
+class BalanceInfoResponse(pydantic.BaseModel):
     bonus: int
     real: int
 

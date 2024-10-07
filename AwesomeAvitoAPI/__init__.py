@@ -13,9 +13,7 @@ __all__ = (
     'UserInfoResponse',
 )
 
-from modules.AvitoAdvertisements import AvitoAdvertisements
-from modules.AvitoProfile import AvitoProfile
-from modules.AvitoToken import AvitoToken
+from modules import *
 from responses import *
 
 

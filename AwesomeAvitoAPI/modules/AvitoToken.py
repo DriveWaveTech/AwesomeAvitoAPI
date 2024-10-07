@@ -1,7 +1,7 @@
 import asyncio
 
-from avitoapi.base import AvitoBase
-from avitoapi.responses import TokenResponse
+from base import AvitoBase
+from responses import TokenResponse
 
 
 class AvitoToken(AvitoBase):

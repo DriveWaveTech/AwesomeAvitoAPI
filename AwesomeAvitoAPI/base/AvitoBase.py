@@ -3,10 +3,10 @@ import typing
 
 import aiohttp
 
-from avitoapi.base.Logger import Logger
-from avitoapi.exceptions import AvitoAPIWrongResponseError, AvitoAPINotImplementedError, \
-    AvitoAPIServiceUnavailableError, AvitoAPIServiceError
-from avitoapi.responses import TokenType
+from base.Logger import Logger
+from base.exceptions import AvitoAPIServiceUnavailableError, AvitoAPIWrongResponseError, \
+    AvitoAPINotImplementedError, AvitoAPIServiceError
+from responses import TokenType
 
 
 class AvitoBase(Logger):

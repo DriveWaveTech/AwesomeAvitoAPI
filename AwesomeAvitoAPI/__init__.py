@@ -1,0 +1,1 @@
+from .AwesomeAvitoAPI import AwesomeAvitoAPI

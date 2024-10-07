@@ -4,8 +4,8 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-from avitoapi.base import AvitoBase
-from avitoapi.responses import CallStatisticResponse
+from base import AvitoBase
+from responses import CallStatisticResponse
 
 
 class AvitoAdvertisements(AvitoBase):

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="AwesomeAvitoAPI",
+    name="awesomeavitoapi",
     version="1.0",
     packages=find_packages(),
     install_requires=[
@@ -9,5 +9,7 @@ setup(
         'pydantic==2.9.2',
         'loguru==0.7.2',
         'python-dateutil==2.9.0.post0',
-    ]
+    ],
+    include_package_data=True,
+    python_requires=">=3.12",
 )

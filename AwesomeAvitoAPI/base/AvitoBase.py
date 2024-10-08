@@ -38,7 +38,10 @@ class AvitoBase(Logger):
             async with execute(url=url, **kwargs) as response:
                 match response.status:
                     case 200:
-                        return await response.json()
+                        if not (_json := await response.json()).get('error'):
+                            return _json
+
+                        self._warn(f'Wrong response answer: {_json}')
 
                     case 401 | 403:
                         self._warn(f'Wrong response status! ({response.status})')

@@ -1,8 +1,15 @@
+import enum
 import typing
 
 import pydantic
 
-from responses.item_statuses_enum import ItemStatus
+
+class ItemStatus(enum.Enum):
+    ACTIVE = 'active'
+    REMOVED = 'removed'
+    OLD = 'old'
+    BLOCKED = 'blocked'
+    REJECTED = 'rejected'
 
 
 class Category(pydantic.BaseModel):

@@ -4,8 +4,8 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-from base import AvitoBase
-from responses import CallStatisticResponse, ItemStatus, ItemsResponse
+from AwesomeAvitoAPI.base import AvitoBase
+from AwesomeAvitoAPI.responses import CallStatisticResponse, ItemStatus, ItemsResponse
 
 
 class AvitoAdvertisements(AvitoBase):

@@ -1,7 +1,7 @@
 import asyncio
 
-from base import AvitoBase
-from responses import TokenResponse
+from AwesomeAvitoAPI.base import AvitoBase
+from AwesomeAvitoAPI.responses import TokenResponse
 
 
 class AvitoToken(AvitoBase):

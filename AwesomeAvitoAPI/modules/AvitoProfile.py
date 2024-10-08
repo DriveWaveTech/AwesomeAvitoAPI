@@ -3,8 +3,8 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-from base import AvitoBase
-from responses import UserInfoResponse, BalanceInfoResponse, OperationHistoryResponse
+from AwesomeAvitoAPI.base import AvitoBase
+from AwesomeAvitoAPI.responses import UserInfoResponse, BalanceInfoResponse, OperationHistoryResponse
 
 
 class AvitoProfile(AvitoBase):

@@ -3,7 +3,7 @@ import setuptools
 setuptools.setup(
     include_package_data=True,
     name='AwesomeAvitoAPI',
-    version='0.2.2',
+    version='0.2.3',
     description='Awesome async library for working with AvitoAPI!',
     url='https://github.com/Irrenriel/AwesomeAvitoAPI',
     author='Irrenriel',

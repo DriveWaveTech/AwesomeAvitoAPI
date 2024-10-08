@@ -89,6 +89,7 @@ class AvitoAdvertisements(AvitoBase):
         response = await self._request(
             method='POST',
             url=f'https://api.avito.ru/core/v1/accounts/{await self.account_id}/calls/stats/',
+            headers=headers,
             data={
                 'dateFrom': date_from,
                 'dateTo': date_to,

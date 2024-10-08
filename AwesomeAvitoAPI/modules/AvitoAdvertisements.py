@@ -37,7 +37,7 @@ class AvitoAdvertisements(AvitoBase):
             method='POST',
             url=f'https://api.avito.ru/core/v1/items/{item_id}/update_price',
             headers=headers,
-            data={
+            json={
                 'price': price
             }
         )

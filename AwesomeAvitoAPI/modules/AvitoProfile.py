@@ -79,10 +79,10 @@ class AvitoProfile(AvitoBase):
             method="POST",
             url="https://api.avito.ru/core/v1/accounts/operations_history/",
             headers=headers,
-            data={
+            json={
                 'dateTimeFrom': datetime_from,
                 'dateTimeTo': datetime_to,
             }
         )
 
-        return [OperationHistoryResponse(**r) for r in response]
+        return [OperationHistoryResponse(**r) for r in response.get('result', {}).get('operations', [])]

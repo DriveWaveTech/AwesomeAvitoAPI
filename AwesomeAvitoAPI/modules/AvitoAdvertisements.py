@@ -153,7 +153,9 @@ class AvitoAdvertisements(AvitoBase):
         page = 1
 
         while True:
-            yield items := await self.get_items(per_page=100, page=page)
+            items = await self.get_items(per_page=100, page=page)
+
+            yield items
 
             if not items or len(items.resources) < 100:
                 break

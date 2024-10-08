@@ -6,7 +6,7 @@ import pydantic
 
 class DaysData(pydantic.BaseModel):
     answered: int
-    calls: 0
+    calls: int
     new: int
     newAnswered: int
     date: datetime.datetime

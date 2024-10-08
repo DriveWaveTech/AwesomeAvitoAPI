@@ -13,8 +13,8 @@ __all__ = (
     'UserInfoResponse',
 )
 
-from modules import *
-from responses import *
+from .modules import *
+from .responses import *
 
 
 class AwesomeAvitoAPI(

@@ -15,7 +15,7 @@ class DaysData(pydantic.BaseModel):
 class CallStatisticResponse(pydantic.BaseModel):
     itemId: int
     employeeId: int
-    days: typing.List[DaysData]
+    days: typing.List[DaysData] = pydantic.Field(default_factory=list)
 
     def __str__(self):
         return f'<{self.__class__.__name__} {' '.join([f'{k}={v}' for k, v in self.__dict__.items()])}>'

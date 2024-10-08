@@ -90,7 +90,7 @@ class AvitoAdvertisements(AvitoBase):
             method='POST',
             url=f'https://api.avito.ru/core/v1/accounts/{await self.account_id}/calls/stats/',
             headers=headers,
-            data={
+            json={
                 'dateFrom': date_from,
                 'dateTo': date_to,
                 'itemIds': item_ids

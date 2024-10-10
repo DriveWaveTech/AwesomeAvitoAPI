@@ -5,18 +5,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from AwesomeAvitoAPI.base import AvitoBase
-from AwesomeAvitoAPI.responses import CallStatisticResponse, ItemStatus, ItemsResponse
+from AwesomeAvitoAPI.responses import PostCallsStatsResponse, ItemStatus, ItemsInfoResponse
 
 
-class AvitoAdvertisements(AvitoBase):
-    def __init__(
-        self,
-        *args,
-        **kwargs
-    ):
-        super().__init__()
-
-    async def update_ad_price(self, item_id: int, price: int) -> bool:
+class AvitoItem(AvitoBase):
+    async def update_price(self, item_id: int, price: int) -> bool:
         """
         https://developers.avito.ru/api-catalog/item/documentation#operation/updatePrice
 
@@ -30,13 +23,10 @@ class AvitoAdvertisements(AvitoBase):
         if not isinstance(item_id, int):
             raise ValueError("Item ID must be an integer")
 
-        headers = await self._auth_header
-        headers['Content-Type'] = 'application/json'
-
         response = await self._request(
             method='POST',
             url=f'https://api.avito.ru/core/v1/items/{item_id}/update_price',
-            headers=headers,
+            headers=await self._auth_header,
             json={
                 'price': price
             }
@@ -44,21 +34,21 @@ class AvitoAdvertisements(AvitoBase):
 
         return response.get('result', {}).get('success', False)
 
-    async def get_cost_of_services(self):
+    async def vas_prices(self):
         """
-        https://developers.avito.ru/api-catalog/item/documentation#operation/vasPrices
+        TODO: https://developers.avito.ru/api-catalog/item/documentation#operation/vasPrices
 
         :return:
         """
         warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
         raise NotImplementedError
 
-    async def get_call_statistics(
+    async def post_calls_stats(
         self,
         item_ids: typing.Union[int, typing.List[int]],
         date_from: typing.Union[str, datetime] = None,
         date_to: typing.Union[str, datetime] = None,
-    ):
+    ) -> typing.List[PostCallsStatsResponse]:
         """
         https://developers.avito.ru/api-catalog/item/documentation#operation/postCallsStats
 
@@ -97,16 +87,25 @@ class AvitoAdvertisements(AvitoBase):
             }
         )
 
-        return [CallStatisticResponse(**r) for r in response.get('result', {}).get('items', [])]
+        return [PostCallsStatsResponse(**r) for r in response.get('result', {}).get('items', [])]
 
-    async def get_items(
+    async def get_item_info(self):
+        """
+        TODO: https://developers.avito.ru/api-catalog/item/documentation#operation/getItemInfo
+
+        :return:
+        """
+        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
+        raise NotImplementedError
+
+    async def get_items_info(
         self,
         per_page: int = 25,
         page: int = 1,
         updated_at_from: typing.Union[str, datetime] = None,
         category: typing.Optional[int] = None,
         *statuses: typing.Tuple[ItemStatus]
-    ):
+    ) -> ItemsInfoResponse:
         """
         https://developers.avito.ru/api-catalog/item/documentation#operation/getItemsInfo
 
@@ -143,9 +142,9 @@ class AvitoAdvertisements(AvitoBase):
             params=params
         )
 
-        return ItemsResponse(**response)
+        return ItemsInfoResponse(**response)
 
-    async def get_all_items(self):
+    async def get_all_items_info(self):
         """
         https://developers.avito.ru/api-catalog/item/documentation#operation/getItemsInfo
 
@@ -154,7 +153,7 @@ class AvitoAdvertisements(AvitoBase):
         page = 1
 
         while True:
-            items = await self.get_items(per_page=100, page=page)
+            items = await self.get_items_info(per_page=100, page=page)
 
             yield items
 
@@ -162,3 +161,21 @@ class AvitoAdvertisements(AvitoBase):
                 break
 
             page += 1
+
+    async def apply_vas(self):
+        """
+        TODO: https://developers.avito.ru/api-catalog/item/documentation#operation/applyVas
+
+        :return:
+        """
+        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
+        raise NotImplementedError
+
+    async def item_stats_shallow(self):
+        """
+        TODO: https://developers.avito.ru/api-catalog/item/documentation#operation/itemStatsShallow
+
+        :return:
+        """
+        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
+        raise NotImplementedError

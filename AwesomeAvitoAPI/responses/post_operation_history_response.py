@@ -3,7 +3,7 @@ import datetime
 import pydantic
 
 
-class OperationHistoryResponse(pydantic.BaseModel):
+class PostOperationHistoryResponse(pydantic.BaseModel):
     amountBonus: int
     amountRub: int
     amountTotal: int

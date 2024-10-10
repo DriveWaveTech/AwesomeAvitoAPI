@@ -4,18 +4,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from AwesomeAvitoAPI.base import AvitoBase
-from AwesomeAvitoAPI.responses import UserInfoResponse, BalanceInfoResponse, OperationHistoryResponse
+from AwesomeAvitoAPI.responses import UserInfoSelfResponse, UserBalanceResponse, PostOperationHistoryResponse
 
 
-class AvitoProfile(AvitoBase):
-    def __init__(
-        self,
-        *args,
-        **kwargs
-    ):
-        super().__init__()
-
-    async def get_info(self) -> UserInfoResponse:
+class AvitoUser(AvitoBase):
+    async def get_user_info_self(self) -> UserInfoSelfResponse:
         """
         https://developers.avito.ru/api-catalog/user/documentation#operation/getUserInfoSelf
 
@@ -27,14 +20,14 @@ class AvitoProfile(AvitoBase):
             headers=await self._auth_header
         )
 
-        user_info_response = UserInfoResponse(**response)
+        user_info_self_response = UserInfoSelfResponse(**response)
 
         if not self._account_id:
-            self._account_id = user_info_response.id
+            self._account_id = user_info_self_response.id
 
-        return user_info_response
+        return user_info_self_response
 
-    async def get_balance(self) -> BalanceInfoResponse:
+    async def get_user_balance(self) -> UserBalanceResponse:
         """
         https://developers.avito.ru/api-catalog/user/documentation#operation/getUserBalance
 
@@ -46,13 +39,13 @@ class AvitoProfile(AvitoBase):
             headers=await self._auth_header
         )
 
-        return BalanceInfoResponse(**response)
+        return UserBalanceResponse(**response)
 
-    async def get_operation_history(
+    async def post_operations_history(
         self,
         datetime_from: typing.Union[str, datetime] = None,
         datetime_to: typing.Union[str, datetime] = None,
-    ) -> typing.Optional[typing.List[OperationHistoryResponse]]:
+    ) -> typing.Optional[typing.List[PostOperationHistoryResponse]]:
         """
         https://developers.avito.ru/api-catalog/user/documentation#operation/postOperationsHistory
 
@@ -72,17 +65,14 @@ class AvitoProfile(AvitoBase):
         if isinstance(datetime_to, datetime):
             datetime_to = datetime_to.strftime("%Y-%m-%d")
 
-        headers = await self._auth_header
-        headers["Content-Type"] = "application/json"
-
         response = await self._request(
             method="POST",
             url="https://api.avito.ru/core/v1/accounts/operations_history/",
-            headers=headers,
+            headers=await self._auth_header,
             json={
                 'dateTimeFrom': datetime_from,
                 'dateTimeTo': datetime_to,
             }
         )
 
-        return [OperationHistoryResponse(**r) for r in response.get('result', {}).get('operations', [])]
+        return [PostOperationHistoryResponse(**r) for r in response.get('result', {}).get('operations', [])]

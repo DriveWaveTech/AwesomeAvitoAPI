@@ -1,6 +1,8 @@
 from .token_response import TokenResponse, TokenType
-from .user_info_response import UserInfoResponse
-from .balance_info_response import BalanceInfoResponse
-from .operation_history_response import OperationHistoryResponse
-from .call_statistic_response import CallStatisticResponse
-from .items_response import ItemsResponse, ItemStatus
+from .user_info_self_response import UserInfoSelfResponse
+from .user_balance_response import UserBalanceResponse
+from .post_operation_history_response import PostOperationHistoryResponse
+from .post_calls_stats_response import PostCallsStatsResponse
+from .items_info_response import ItemsInfoResponse, ItemStatus
+from .post_send_message_response import PostSendMessageResponse
+from .post_send_image_message_response import PostSendImageMessageResponse

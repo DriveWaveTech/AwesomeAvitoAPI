@@ -32,6 +32,6 @@ class Resource(pydantic.BaseModel):
     url: str
 
 
-class ItemsResponse(pydantic.BaseModel):
+class ItemsInfoResponse(pydantic.BaseModel):
     meta: Meta
     resources: typing.List[Resource]

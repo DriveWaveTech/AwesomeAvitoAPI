@@ -1,7 +1,7 @@
 import pydantic
 
 
-class UserInfoResponse(pydantic.BaseModel):
+class UserInfoSelfResponse(pydantic.BaseModel):
     id: int
     email: str
     name: str

@@ -1,7 +1,7 @@
 import pydantic
 
 
-class BalanceInfoResponse(pydantic.BaseModel):
+class UserBalanceResponse(pydantic.BaseModel):
     bonus: float
     real: float
 

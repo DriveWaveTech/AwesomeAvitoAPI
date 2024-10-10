@@ -1,10 +1,11 @@
 import asyncio
+import warnings
 
 from AwesomeAvitoAPI.base import AvitoBase
 from AwesomeAvitoAPI.responses import TokenResponse
 
 
-class AvitoToken(AvitoBase):
+class AvitoAuth(AvitoBase):
     def __init__(
         self,
         client_id: str,
@@ -13,7 +14,7 @@ class AvitoToken(AvitoBase):
         *args,
         **kwargs
     ):
-        super().__init__()
+        super().__init__(*args, **kwargs)
 
         self.loop = loop or asyncio.get_event_loop()
 
@@ -47,3 +48,21 @@ class AvitoToken(AvitoBase):
         self._token_type = token_response.token_type
 
         return self._access_token
+
+    async def get_access_token_authorization_code(self):
+        """
+        TODO: https://developers.avito.ru/api-catalog/auth/documentation#operation/getAccessTokenAuthorizationCode
+
+        :return:
+        """
+        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
+        raise NotImplementedError
+
+    async def refresh_access_token_authorization_code(self):
+        """
+        TODO: https://developers.avito.ru/api-catalog/auth/documentation#operation/refreshAccessTokenAuthorizationCode
+
+        :return:
+        """
+        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
+        raise NotImplementedError

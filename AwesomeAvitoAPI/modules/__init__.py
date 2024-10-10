@@ -1,3 +1,3 @@
-from .AvitoAdvertisements import AvitoAdvertisements
-from .AvitoProfile import AvitoProfile
-from .AvitoToken import AvitoToken
+from .AvitoItem import AvitoItem
+from .AvitoUser import AvitoUser
+from .AvitoAuth import AvitoAuth

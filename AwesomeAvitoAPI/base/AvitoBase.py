@@ -13,7 +13,11 @@ class AvitoBase(Logger):
     MAX_TRIES = 3
     SLEEP_TIME = 1.5
 
-    def __init__(self):
+    def __init__(
+        self,
+        *args,
+        **kwargs
+    ):
         super().__init__()
 
         self._session = aiohttp.ClientSession()
@@ -106,4 +110,7 @@ class AvitoBase(Logger):
         if not await self.token_type:
             raise AvitoAPINotImplementedError
 
-        return {'Authorization': f'{self._token_type.value} {self._access_token}'}
+        return {
+            'Authorization': f'{self._token_type.value} {self._access_token}',
+            'Content-Type': 'application/json'
+        }

@@ -6,3 +6,5 @@ from .post_calls_stats_response import PostCallsStatsResponse
 from .items_info_response import ItemsInfoResponse, ItemStatus
 from .post_send_message_response import PostSendMessageResponse
 from .post_send_image_message_response import PostSendImageMessageResponse
+from .chats_v2_response import ChatsV2Response, ChatTypes, ChatByIdV2Response
+from .messages_v3_response import MessagesV3Response

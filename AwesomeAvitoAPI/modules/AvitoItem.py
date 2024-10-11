@@ -144,7 +144,9 @@ class AvitoItem(AvitoBase):
 
         return ItemsInfoResponse(**response)
 
-    async def get_all_items_info(self):
+    async def get_all_items_info(
+        self
+    ) -> typing.AsyncGenerator[ItemsInfoResponse, None]:
         """
         https://developers.avito.ru/api-catalog/item/documentation#operation/getItemsInfo
 

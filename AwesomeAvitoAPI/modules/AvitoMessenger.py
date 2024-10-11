@@ -1,9 +1,11 @@
+import pathlib
 import typing
 import warnings
 
 from AwesomeAvitoAPI.base import AvitoBase
 
-from AwesomeAvitoAPI.responses import PostSendMessageResponse, PostSendImageMessageResponse
+from AwesomeAvitoAPI.responses import PostSendMessageResponse, PostSendImageMessageResponse, ChatsV2Response, \
+    ChatTypes, ChatByIdV2Response, MessagesV3Response
 
 
 class AvitoMessenger(AvitoBase):
@@ -118,8 +120,7 @@ class AvitoMessenger(AvitoBase):
 
         :return:
         """
-        if not isinstance(voice_ids, list):
-            voice_ids = [v for v in voice_ids]
+        voice_ids = [v for v in voice_ids]
 
         for i, voice_id in enumerate(voice_ids):
             if not isinstance(voice_id, str):
@@ -136,14 +137,38 @@ class AvitoMessenger(AvitoBase):
 
         return response.get('voices_urls', {})
 
-    async def upload_images(self):
+    async def upload_images(
+        self,
+        *file_paths: typing.Iterable[typing.Union[str, pathlib.Path]],
+    ) -> typing.Dict[str, typing.Dict[str, str]]:
         """
-        TODO: https://developers.avito.ru/api-catalog/messenger/documentation#operation/uploadImages
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/uploadImages
 
         :return:
         """
-        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
-        raise NotImplementedError
+        file_paths = [f for f in file_paths]
+
+        for i, file_path in enumerate(file_paths):
+            if not isinstance(file_path, str):
+                file_paths[i] = str(file_path)
+
+        files = [
+            open(file_path, 'rb') for file_path in file_paths  # noqa
+        ]
+
+        response = await self._request(
+            method='POST',
+            headers=await self._auth_header,
+            url=f'https://api.avito.ru/messenger/v1/accounts/{await self.account_id}/uploadImages',
+            json={
+                'uploadfile': files
+            }
+        )
+
+        for file in files:
+            file.close()
+
+        return response
 
     async def get_subscriptions(self):
         """
@@ -172,32 +197,154 @@ class AvitoMessenger(AvitoBase):
         warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
         raise NotImplementedError
 
-    async def get_chats_v2(self):
+    async def get_chats_v2(
+        self,
+        *item_ids: typing.Iterable[int],
+        unread_only: bool = False,
+        chat_types: typing.Union[ChatTypes, typing.Iterable[ChatTypes]] = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> ChatsV2Response:
         """
-        TODO: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatsV2
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatsV2
 
         :return:
         """
-        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
-        raise NotImplementedError
+        if not isinstance(limit, int):
+            limit = 100
 
-    async def get_chat_by_id_v2(self):
+        if not isinstance(offset, int):
+            offset = 0
+
+        if not chat_types:
+            chat_types = [ChatTypes.ITEMS]
+
+        if not isinstance(chat_types, typing.Iterable):
+            chat_types = [chat_types]
+
+        params = {
+            'limit': 100 if 0 > limit > 100 else limit,
+            'offset': offset if offset > 0 else 0,
+            'unread_only': unread_only,
+            'chat_types': ','.join([chat_type.value for chat_type in chat_types if isinstance(chat_type, ChatTypes)]),
+        }
+
+        if item_ids:
+            params['item_ids'] = ','.join(str(item_id) for item_id in item_ids if isinstance(item_id, int))
+
+        response = await self._request(
+            method='GET',
+            headers=await self._auth_header,
+            url=f'https://api.avito.ru/messenger/v2/accounts/{await self.account_id}/chats'
+        )
+
+        return ChatsV2Response(**response)
+
+    async def get_all_chats_v2(
+        self,
+        *item_ids: typing.Iterable[int],
+        unread_only: bool = False,
+        chat_types: typing.Union[ChatTypes, typing.Iterable[ChatTypes]] = None,
+    ) -> typing.AsyncGenerator[ChatsV2Response, None]:
         """
-        TODO: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatByIdV2
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatsV2
 
         :return:
         """
-        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
-        raise NotImplementedError
+        offset = 0
 
-    async def get_messages_v3(self):
+        while True:
+            chats = await self.get_chats_v2(
+                *item_ids,
+                unread_only=unread_only,
+                chat_types=chat_types,
+                limit=100,
+                offset=offset,
+            )
+
+            yield chats
+
+            if not chats.chats or len(chats.chats) < 100:
+                break
+
+            offset += 100
+
+    async def get_chat_by_id_v2(
+        self,
+        chat_id: typing.Union[int, str],
+    ) -> ChatByIdV2Response:
         """
-        TODO: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getMessagesV3
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatByIdV2
 
         :return:
         """
-        warnings.warn(f'This method still in development and deprecated!', PendingDeprecationWarning)
-        raise NotImplementedError
+        if not isinstance(chat_id, str):
+            chat_id = str(chat_id)
+
+        response = await self._request(
+            method='GET',
+            headers=await self._auth_header,
+            url=f'https://api.avito.ru/messenger/v2/accounts/{await self.account_id}/chats/{chat_id}'
+        )
+
+        return ChatByIdV2Response(**response)
+
+    async def get_messages_v3(
+        self,
+        chat_id: typing.Union[int, str],
+        limit: int = 100,
+        offset: int = 0,
+    ) -> typing.List[MessagesV3Response]:
+        """
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/getMessagesV3
+
+        :return:
+        """
+        if not isinstance(chat_id, str):
+            chat_id = str(chat_id)
+
+        if not isinstance(limit, int):
+            limit = 100
+
+        if not isinstance(offset, int):
+            offset = 0
+
+        response = await self._request(
+            method='GET',
+            headers=await self._auth_header,
+            url=f'https://api.avito.ru/messenger/v3/accounts/{await self.account_id}/chats/{chat_id}/messages/',
+            params={
+                'limit': 100 if 0 > limit > 100 else limit,
+                'offset': offset if offset > 0 else 0,
+            }
+        )
+
+        return [MessagesV3Response(**r) for r in response]
+
+    async def get_all_messages_v3(
+        self,
+        chat_id: typing.Union[int, str],
+    ) -> typing.AsyncGenerator[typing.List[MessagesV3Response], None]:
+        """
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/getMessagesV3
+
+        :return:
+        """
+        offset = 0
+
+        while True:
+            messages = await self.get_messages_v3(
+                chat_id=chat_id,
+                limit=100,
+                offset=offset,
+            )
+
+            yield messages
+
+            if not messages or len(messages) < 100:
+                break
+
+            offset += 100
 
     async def post_webhook_v3(self):
         """

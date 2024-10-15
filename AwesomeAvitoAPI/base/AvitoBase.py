@@ -78,13 +78,13 @@ class AvitoBase(Logger):
     async def get_access_token(self):
         raise AvitoAPINotImplementedError
 
-    async def get_info(self):
+    async def get_user_info_self(self):
         raise AvitoAPINotImplementedError
 
     @property
     async def account_id(self) -> int:
         if not self._account_id:
-            await self.get_info()
+            await self.get_user_info_self()
 
         return self._account_id
 

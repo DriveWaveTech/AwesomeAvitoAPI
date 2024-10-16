@@ -225,7 +225,7 @@ class AvitoMessenger(AvitoBase):
         params = {
             'limit': 100 if 0 > limit > 100 else limit,
             'offset': offset if offset > 0 else 0,
-            'unread_only': unread_only,
+            'unread_only': {True: 'true', False: 'false'}.get(unread_only, False),
             'chat_types': ','.join([chat_type.value for chat_type in chat_types if isinstance(chat_type, ChatTypes)]),
         }
 
@@ -235,7 +235,8 @@ class AvitoMessenger(AvitoBase):
         response = await self._request(
             method='GET',
             headers=await self._auth_header,
-            url=f'https://api.avito.ru/messenger/v2/accounts/{await self.account_id}/chats'
+            url=f'https://api.avito.ru/messenger/v2/accounts/{await self.account_id}/chats',
+            params=params
         )
 
         return ChatsV2Response(**response)
@@ -251,7 +252,7 @@ class AvitoMessenger(AvitoBase):
 
         :return:
         """
-        offset, cache = 0, []
+        offset = 0
 
         while True:
             chats = await self.get_chats_v2(
@@ -262,12 +263,9 @@ class AvitoMessenger(AvitoBase):
                 offset=offset,
             )
 
-            if chats:
-                [cache.append(c.id) for c in chats.chats if c.id not in cache]
-
             yield chats
 
-            if len(cache) < offset:
+            if not chats.chats or len(chats.chats) < 100:
                 break
 
             offset += 100

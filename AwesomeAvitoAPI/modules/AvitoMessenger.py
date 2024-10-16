@@ -251,7 +251,7 @@ class AvitoMessenger(AvitoBase):
 
         :return:
         """
-        offset = 0
+        offset, cache = 0, []
 
         while True:
             chats = await self.get_chats_v2(
@@ -262,9 +262,12 @@ class AvitoMessenger(AvitoBase):
                 offset=offset,
             )
 
+            if chats:
+                [cache.append(c.id) for c in chats.chats if c.id not in cache]
+
             yield chats
 
-            if not chats.chats or len(chats.chats) < 100:
+            if len(cache) < offset:
                 break
 
             offset += 100

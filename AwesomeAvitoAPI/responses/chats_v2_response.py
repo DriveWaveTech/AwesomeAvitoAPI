@@ -81,6 +81,9 @@ class ChatByIdV2Response(pydantic.BaseModel):
     def validate_created(cls, value: int):  # noqa
         return datetime.datetime.fromtimestamp(value)
 
+    def __hash__(self):
+        return hash(self.id)
+
 
 class ChatsV2Response(pydantic.BaseModel):
     chats: typing.List[ChatByIdV2Response] = pydantic.Field(default_factory=list)

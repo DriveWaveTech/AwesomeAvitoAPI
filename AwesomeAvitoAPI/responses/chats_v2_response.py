@@ -34,7 +34,7 @@ class Link(pydantic.BaseModel):
 
 
 class Content(pydantic.BaseModel):
-    link: Link
+    link: typing.Optional[Link] = None
 
 
 class LastMessage(pydantic.BaseModel):

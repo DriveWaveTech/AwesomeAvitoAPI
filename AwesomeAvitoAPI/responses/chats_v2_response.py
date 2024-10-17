@@ -34,7 +34,7 @@ class Link(pydantic.BaseModel):
 
 
 class Content(pydantic.BaseModel):
-    link: Link
+    link: typing.Optional[Link] = None
 
 
 class LastMessage(pydantic.BaseModel):
@@ -80,6 +80,9 @@ class ChatByIdV2Response(pydantic.BaseModel):
     @pydantic.field_validator('created', mode='before')
     def validate_created(cls, value: int):  # noqa
         return datetime.datetime.fromtimestamp(value)
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 class ChatsV2Response(pydantic.BaseModel):

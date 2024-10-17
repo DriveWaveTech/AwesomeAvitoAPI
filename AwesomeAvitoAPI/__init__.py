@@ -5,7 +5,8 @@ from .responses import *
 class AwesomeAvitoAPI(
     AvitoAuth,
     AvitoUser,
-    AvitoItem
+    AvitoItem,
+    AvitoMessenger
 ):
     def __init__(
         self,

@@ -6,7 +6,8 @@ class AwesomeAvitoAPI(
     AvitoAuth,
     AvitoUser,
     AvitoItem,
-    AvitoMessenger
+    AvitoMessenger,
+    AvitoRatings
 ):
     def __init__(
         self,

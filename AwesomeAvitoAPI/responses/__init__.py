@@ -8,3 +8,6 @@ from .post_send_message_response import PostSendMessageResponse
 from .post_send_image_message_response import PostSendImageMessageResponse
 from .chats_v2_response import ChatsV2Response, ChatTypes, ChatByIdV2Response
 from .messages_v3_response import MessagesV3Response
+from .create_review_answer_v1_response import CreateReviewAnswerV1
+from .ratings_info_v1_response import RatingsInfoV1Response
+from .reviews_v1_response import ReviewsV1Response

@@ -32,7 +32,7 @@ class AvitoBase(Logger):
         execute = {
             'GET': self._session.get,
             'POST': self._session.post,
-            # (Using only GET and POST methods)
+            'DELETE': self._session.delete,
         }.get(method.upper(), self._session.get)
 
         tries = 0

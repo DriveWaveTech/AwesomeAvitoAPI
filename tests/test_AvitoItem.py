@@ -1,4 +1,5 @@
 import pytest
+from AwesomeAvitoAPI.responses import ItemsInfoResponse
 
 
 @pytest.mark.asyncio
@@ -20,11 +21,12 @@ class TestAvitoItem:
         with pytest.raises(NotImplementedError):
             await awesome_avito_api.get_item_info()
 
-    @pytest.mark.skip(reason="Пропускаем этот тест")
     async def test_get_items_info(self, awesome_avito_api):
+        items = await awesome_avito_api.get_items_info()
+        assert isinstance(items, ItemsInfoResponse)
         ...
 
-    @pytest.mark.skip(reason="Пропускаем этот тест")
+    @pytest.mark.skip(reason="Пропускаем этот тест, пока не понял его")
     async def test_get_all_items_info(self, awesome_avito_api):
         ...
 

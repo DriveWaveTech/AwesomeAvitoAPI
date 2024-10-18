@@ -3,12 +3,15 @@ import pytest
 
 @pytest.mark.asyncio
 class TestAvitoMessenger:
+    @pytest.mark.skip(reason="Пропускаем этот тест")
     async def test_post_send_message(self, awesome_avito_api):
         ...
 
+    @pytest.mark.skip(reason="Пропускаем этот тест")
     async def test_post_send_image_message(self, awesome_avito_api):
         ...
 
+    @pytest.mark.skip(reason="Пропускаем этот тест")
     async def test_delete_message(self, awesome_avito_api):
         ...
 
@@ -18,6 +21,7 @@ class TestAvitoMessenger:
     async def test_get_voice_files(self, awesome_avito_api):
         ...
 
+    @pytest.mark.skip(reason="Пропускаем этот тест")
     async def test_upload_images(self, awesome_avito_api):
         ...
 

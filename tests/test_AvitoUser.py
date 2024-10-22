@@ -1,6 +1,7 @@
 import pytest
 from AwesomeAvitoAPI.responses import UserInfoSelfResponse, UserBalanceResponse
 
+
 @pytest.mark.asyncio
 class TestAvitoUser:
     async def test_get_user_info_self(self, awesome_avito_api):
@@ -20,6 +21,8 @@ class TestAvitoUser:
         assert isinstance(user_balance.bonus, float)
         assert isinstance(user_balance.real, float)
 
-    @pytest.mark.skip(reason="Пропускаем этот тест")
+
     async def test_post_operations_history(self, awesome_avito_api):
-        ...
+        operations = await awesome_avito_api.post_operations_history()
+
+        assert isinstance(operations, list)

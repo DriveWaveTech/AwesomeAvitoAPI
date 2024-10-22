@@ -1,11 +1,15 @@
+from typing import AsyncGenerator
+
 import pytest
 from AwesomeAvitoAPI.responses import ItemsInfoResponse
 
 
+ignore_test = pytest.mark.skipif("not config.getoption('--all')", reason="Пропускаем этот тест")
+
 @pytest.mark.asyncio
 class TestAvitoItem:
 
-    @pytest.mark.skip(reason="Пропускаем этот тест")
+    @ignore_test
     async def test_update_price(self, awesome_avito_api):
         ...
 
@@ -13,9 +17,14 @@ class TestAvitoItem:
         with pytest.raises(NotImplementedError):
             await awesome_avito_api.vas_prices()
 
-    @pytest.mark.skip(reason="Пропускаем этот тест")
+    @ignore_test #потому как пока не знаю откуда брать item_ids
     async def test_post_calls_stats(self, awesome_avito_api):
-        ...
+        item_ids = ...
+        date_from = ...
+        date_to = ...
+        call_stats = await awesome_avito_api.post_calls_stats(item_ids=item_ids, date_from=date_from,date_to= date_to)
+        assert isinstance(call_stats, list)
+
 
     async def test_get_item_info(self, awesome_avito_api):
         with pytest.raises(NotImplementedError):
@@ -26,9 +35,11 @@ class TestAvitoItem:
         assert isinstance(items, ItemsInfoResponse)
         ...
 
-    @pytest.mark.skip(reason="Пропускаем этот тест, пока не понял его")
     async def test_get_all_items_info(self, awesome_avito_api):
-        ...
+        items_generator = await awesome_avito_api.get_all_items_info()
+        assert isinstance(items_generator, AsyncGenerator)
+        async for item in items_generator:
+            assert isinstance(item, ItemsInfoResponse)
 
     async def test_apply_vas(self, awesome_avito_api):
         with pytest.raises(NotImplementedError):

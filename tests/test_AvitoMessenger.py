@@ -50,7 +50,6 @@ class TestAvitoMessenger:
         chats = await awesome_avito_api.get_voice_files(item_ids)
         assert isinstance(chats, ChatsV2Response)
 
-
 async def test_get_all_chats_v2(self, awesome_avito_api):
         item_ids = []
         chats_generator = await awesome_avito_api.et_all_chats_v2(item_ids)
@@ -58,12 +57,10 @@ async def test_get_all_chats_v2(self, awesome_avito_api):
         async for chat in chats_generator:
             assert isinstance(chat, ChatsV2Response)
 
-
     async def test_get_chat_by_id_v2(self, awesome_avito_api):
         chat_id = ...
         chat = await awesome_avito_api.get_voice_files(chat_id)
         assert isinstance(chat, ChatByIdV2Response)
-
 
     async def test_get_messages_v3(self, awesome_avito_api):
         chat_id = ...
@@ -72,14 +69,12 @@ async def test_get_all_chats_v2(self, awesome_avito_api):
         for mes in messages:
             assert isinstance(mes, MessagesV3Response)
 
-
     async def test_get_all_messages_v3(self, awesome_avito_api):
         chat_id = ...
         messages_generator = await awesome_avito_api.get_all_messages_v3(chat_id)
         assert isinstance(messages_generator, AsyncGenerator)
-        for mes in messages_generator:
+        async for mes in messages_generator:
             assert isinstance(mes, MessagesV3Response)
-
 
     async def test_post_webhook_v3(self, awesome_avito_api):
         with pytest.raises(NotImplementedError):

@@ -20,7 +20,7 @@ class TestAvitoMessenger:
 
     @ignore_test # потому как не знаю какой чат айди брать
     async def test_chat_read(self, awesome_avito_api):
-        chat_id = ...
+        chat_id = 0
         reader = await awesome_avito_api.chat_read(chat_id=chat_id)
         assert isinstance(reader, bool)
 
@@ -58,19 +58,19 @@ async def test_get_all_chats_v2(self, awesome_avito_api):
             assert isinstance(chat, ChatsV2Response)
 
     async def test_get_chat_by_id_v2(self, awesome_avito_api):
-        chat_id = ...
+        chat_id = 0
         chat = await awesome_avito_api.get_voice_files(chat_id)
         assert isinstance(chat, ChatByIdV2Response)
 
     async def test_get_messages_v3(self, awesome_avito_api):
-        chat_id = ...
+        chat_id = 0
         messages = await awesome_avito_api.get_messages_v3(chat_id)
         assert isinstance(messages, list)
         for mes in messages:
             assert isinstance(mes, MessagesV3Response)
 
     async def test_get_all_messages_v3(self, awesome_avito_api):
-        chat_id = ...
+        chat_id = 0
         messages_generator = await awesome_avito_api.get_all_messages_v3(chat_id)
         assert isinstance(messages_generator, AsyncGenerator)
         async for mes in messages_generator:

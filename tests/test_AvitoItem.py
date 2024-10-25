@@ -19,10 +19,8 @@ class TestAvitoItem:
 
     @ignore_test #потому как пока не знаю откуда брать item_ids
     async def test_post_calls_stats(self, awesome_avito_api):
-        item_ids = ...
-        date_from = ...
-        date_to = ...
-        call_stats = await awesome_avito_api.post_calls_stats(item_ids=item_ids, date_from=date_from,date_to= date_to)
+        item_ids = 0
+        call_stats = await awesome_avito_api.post_calls_stats(item_ids=item_ids)
         assert isinstance(call_stats, list)
 
 

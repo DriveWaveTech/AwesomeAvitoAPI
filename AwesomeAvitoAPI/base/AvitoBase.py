@@ -32,8 +32,12 @@ class AvitoBase(Logger):
         execute = {
             'GET': self._session.get,
             'POST': self._session.post,
-            # (Using only GET and POST methods)
+            'DELETE': self._session.delete,
         }.get(method.upper(), self._session.get)
+
+        # Add default headers:
+        if kwargs.get('headers') is None:
+            kwargs['headers'] = await self._auth_header
 
         tries = 0
         is_expired = False

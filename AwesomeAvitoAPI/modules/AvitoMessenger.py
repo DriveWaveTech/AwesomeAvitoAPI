@@ -45,7 +45,7 @@ class AvitoMessenger(AvitoBase):
         image_id: str,
     ) -> PostSendImageMessageResponse:
         """
-        TODO: https://developers.avito.ru/api-catalog/messenger/documentation#operation/postSendImageMessage
+        https://developers.avito.ru/api-catalog/messenger/documentation#operation/postSendImageMessage
 
         :return:
         """

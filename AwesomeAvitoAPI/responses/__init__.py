@@ -11,3 +11,4 @@ from .messages_v3_response import MessagesV3Response
 from .create_review_answer_v1_response import CreateReviewAnswerV1
 from .ratings_info_v1_response import RatingsInfoV1Response
 from .reviews_v1_response import ReviewsV1Response
+from .user_bids_response import UserBidsItemResponse

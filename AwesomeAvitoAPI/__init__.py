@@ -5,9 +5,11 @@ from .responses import *
 class AwesomeAvitoAPI(
     AvitoAuth,
     AvitoUser,
+    AvitoAccountsHierarchy,
+    AvitoAuction,
     AvitoItem,
     AvitoMessenger,
-    AvitoRatings
+    AvitoRatings,
 ):
     def __init__(
         self,

@@ -1,1 +1,1 @@
-# My library for working with Avito API
+# AwesomeAvitoAPI

@@ -1,7 +1,6 @@
 import pytest
 from AwesomeAvitoAPI.modules import AwesomeAvitoAPI
 
-#  Made in UZB
 @pytest.fixture(scope="session")
 async def awesome_avito_api():
     """Фикстура для создания единственного экземпляра AwesomeAvitoAPI на весь тестовый прогон"""

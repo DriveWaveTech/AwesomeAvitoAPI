@@ -8,7 +8,7 @@ class TestAvitoAuth:
         assert token is not None
         assert isinstance(token, str)
         assert len(token) > 0
-        print(f"Получен токен: {token}")
+        print(f"Token: {token}")
 
     async def test_get_access_token_authorization_code(self, awesome_avito_api):
         with pytest.raises(NotImplementedError):

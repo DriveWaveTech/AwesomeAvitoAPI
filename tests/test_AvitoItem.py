@@ -2,9 +2,9 @@ from typing import AsyncGenerator
 
 import pytest
 from AwesomeAvitoAPI.responses import ItemsInfoResponse
+from config import ITEM_IDS
 
-
-ignore_test = pytest.mark.skipif("not config.getoption('--all')", reason="Пропускаем этот тест")
+ignore_test = pytest.mark.skipif("not config.getoption('--all')", reason="Skip that test")
 
 @pytest.mark.asyncio
 class TestAvitoItem:
@@ -19,8 +19,7 @@ class TestAvitoItem:
 
     @ignore_test #потому как пока не знаю откуда брать item_ids
     async def test_post_calls_stats(self, awesome_avito_api):
-        item_ids = 0
-        call_stats = await awesome_avito_api.post_calls_stats(item_ids=item_ids)
+        call_stats = await awesome_avito_api.post_calls_stats(item_ids=ITEM_IDS)
         assert isinstance(call_stats, list)
 
 

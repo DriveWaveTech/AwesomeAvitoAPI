@@ -26,10 +26,10 @@ class Resource(pydantic.BaseModel):
     id: int
     address: str
     category: Category
-    price: int
     status: ItemStatus
     title: str
     url: str
+    price: typing.Optional[int] = None
 
 
 class ItemsInfoResponse(pydantic.BaseModel):
